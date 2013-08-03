@@ -20,8 +20,7 @@ class Client
         $request->setUri($url);
 
         $response = $this->httpClient->dispatch($request);
-		# should interogate response status, throwing appropiate exceptions for error codes
-
-		return json_decode($response->getBody(), true);
+        # should interogate response status, throwing appropiate exceptions for error codes
+        return json_decode($response->getBody(), true);
     }
 }
