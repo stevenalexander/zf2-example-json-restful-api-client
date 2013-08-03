@@ -38,6 +38,9 @@ class Client
     protected function dispatchRequestAndDecodeResponse($url, $method, $data = null)
     {
         $request = new Request();
+        $request->getHeaders()->addHeaders(array(
+            'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8'
+        ));
         $request->setUri($url);
         $request->setMethod($method);
 

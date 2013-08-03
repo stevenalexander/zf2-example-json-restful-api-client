@@ -37,6 +37,9 @@ class IndexController extends AbstractActionController
 
     public function addAction()
     {
+        $config = $this->getServiceLocator()->get('config');
+        $jsonResponse = $this->getHttpRestJsonClient()->post($config['getListUrl'], array('active' => true,'training' => true));
+
         return new ViewModel();
     }
 
@@ -51,7 +54,20 @@ class IndexController extends AbstractActionController
     {
         $id = $this->getIdFromRouteOrRedirectHome();
 
-        return new ViewModel();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+
+            if ($del == 'Yes') {
+                $config = $this->getServiceLocator()->get('config');
+                $jsonResponse = $this->getHttpRestJsonClient()->delete($config['getListUrl']."/".$id);
+            }
+
+            // Redirect to list of albums
+            return $this->redirect()->toRoute('home');
+        }
+
+        return new ViewModel(array('id' => $id));
     }
 
     protected function getHttpRestJsonClient()
