@@ -20,15 +20,16 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-    	return new ViewModel(array("json" =>
-        	$this->getHttpRestJsonClient()->get('https://api.github.com/users/defunkt')));
+        $config = $this->getServiceLocator()->get('config');
+        return new ViewModel(array("json" =>
+            $this->getHttpRestJsonClient()->get($config['getListUrl'])));
     }
 
-    public function getHttpRestJsonClient()
+    protected function getHttpRestJsonClient()
     {
         if (!$this->httpRestJsonClient) {
-            $sm = $this->getServiceLocator();
-            $this->httpRestJsonClient = $sm->get('Application\HttpRestJson\Client');
+            $this->httpRestJsonClient =
+                $this->getServiceLocator()->get('Application\HttpRestJson\Client');
         }
         return $this->httpRestJsonClient;
     }
