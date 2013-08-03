@@ -12,10 +12,14 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
+use Application\HttpRestJson\Client as HttpRestJsonClient;
+
 class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        return new ViewModel();
+    	$client = new HttpRestJsonClient();
+
+        return new ViewModel(array("jsonResponse" => $client->get()));
     }
 }
