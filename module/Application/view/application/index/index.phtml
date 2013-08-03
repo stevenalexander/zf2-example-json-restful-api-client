@@ -1,5 +1,12 @@
 Index
 
 <div>
-<?php echo $this->escapeHtml($jsonResponse); ?>
+	<ul>
+	<?php foreach ($json as $key => $jsonField) : ?>
+		<ul>
+			<em><?php echo $this->escapeHtml($key);?></em> : 
+			<?php echo $this->escapeHtml($jsonField);?>
+		</ul>
+	<?php endforeach; ?>
+	</ul>
 </div>

@@ -20,6 +20,7 @@ class IndexController extends AbstractActionController
     {
     	$client = new HttpRestJsonClient();
 
-        return new ViewModel(array("jsonResponse" => $client->get()));
+        return new ViewModel(array("json" => 
+        	$client->get('https://api.github.com/users/defunkt')));
     }
 }
