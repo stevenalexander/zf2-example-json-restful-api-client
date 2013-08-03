@@ -16,11 +16,20 @@ use Application\HttpRestJson\Client as HttpRestJsonClient;
 
 class IndexController extends AbstractActionController
 {
+    protected $httpRestJsonClient;
+
     public function indexAction()
     {
-    	$client = new HttpRestJsonClient();
+    	return new ViewModel(array("json" =>
+        	$this->getHttpRestJsonClient()->get('https://api.github.com/users/defunkt')));
+    }
 
-        return new ViewModel(array("json" => 
-        	$client->get('https://api.github.com/users/defunkt')));
+    public function getHttpRestJsonClient()
+    {
+        if (!$this->httpRestJsonClient) {
+            $sm = $this->getServiceLocator();
+            $this->httpRestJsonClient = $sm->get('Application\HttpRestJson\Client');
+        }
+        return $this->httpRestJsonClient;
     }
 }

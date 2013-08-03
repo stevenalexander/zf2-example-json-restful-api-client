@@ -7,15 +7,20 @@ use Zend\Http\Request;
 
 class Client
 {
+    protected $httpClient;
+
+    public function __construct(HttpClient $httpClient)
+    {
+        $this->httpClient = $httpClient;
+    }
+
     public function get($url)
     {
 		$request = new Request();
         $request->setUri($url);
-        $httpClient = new HttpClient();
-        # use curl adapter as standard has problems with ssl
-        $httpClient->setAdapter('Zend\Http\Client\Adapter\Curl');
 
-        $response = $httpClient->dispatch($request);
+        $response = $this->httpClient->dispatch($request);
+		# should interogate response status, throwing appropiate exceptions for error codes
 
 		return json_decode($response->getBody(), true);
     }

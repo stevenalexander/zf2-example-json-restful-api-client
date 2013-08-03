@@ -12,6 +12,9 @@ namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+use Zend\Http\Client as HttpClient;
+use Application\HttpRestJson\Client as HttpRestJsonClient;
+
 class Module
 {
     public function onBootstrap(MvcEvent $e)
@@ -33,6 +36,25 @@ class Module
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
+            ),
+        );
+    }
+
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Application\HttpRestJson\Client' => function($serviceManager) {
+                    $httpClient = $serviceManager->get('HttpClient');
+                    $httpRestJsonClient = new HttpRestJsonClient($httpClient);
+                    return $httpRestJsonClient;
+                },
+                'HttpClient' => function($serviceManager) {
+                    $httpClient = new HttpClient();
+                    # use curl adapter as standard has problems with ssl
+                    $httpClient->setAdapter('Zend\Http\Client\Adapter\Curl');
+                    return $httpClient;
+                },
             ),
         );
     }
