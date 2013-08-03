@@ -21,8 +21,11 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         $config = $this->getServiceLocator()->get('config');
-        return new ViewModel(array("json" =>
-            $this->getHttpRestJsonClient()->get($config['getListUrl'])));
+
+        # controller is responsible for handling exceptions thrown by client, i.e. auth/not found
+        $jsonResponse = $this->getHttpRestJsonClient()->get($config['getListUrl']);
+
+        return new ViewModel(array("objects" => $jsonResponse['data']));
     }
 
     public function getAction()
