@@ -25,6 +25,32 @@ class IndexController extends AbstractActionController
             $this->getHttpRestJsonClient()->get($config['getListUrl'])));
     }
 
+    public function getAction()
+    {
+        $id = $this->getIdFromRouteOrRedirectHome();
+
+        return new ViewModel();
+    }
+
+    public function addAction()
+    {
+        return new ViewModel();
+    }
+
+    public function editAction()
+    {
+        $id = $this->getIdFromRouteOrRedirectHome();
+
+        return new ViewModel();
+    }
+
+    public function deleteAction()
+    {
+        $id = $this->getIdFromRouteOrRedirectHome();
+
+        return new ViewModel();
+    }
+
     protected function getHttpRestJsonClient()
     {
         if (!$this->httpRestJsonClient) {
@@ -32,5 +58,14 @@ class IndexController extends AbstractActionController
                 $this->getServiceLocator()->get('Application\HttpRestJson\Client');
         }
         return $this->httpRestJsonClient;
+    }
+
+    protected function getIdFromRouteOrRedirectHome()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('home');
+        }
+        return $id;
     }
 }
